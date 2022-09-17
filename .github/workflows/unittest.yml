@@ -36,6 +36,14 @@ jobs:
           npm run wp-env start
           npm run wp-env run cli 'wp plugin activate mandrill-mail'
 
+      - name: Set Mandrill Options
+        run: |
+          npm run wp-env run cli "wp option update mandrill_mail_api_key ${{ secrets.MANDRILL_API_DEV_KEY }}"
+          npm run wp-env run cli "wp option update mandrill_mail_api_test_key ${{ secrets.MANDRILL_API_DEV_KEY }}"
+          npm run wp-env run cli "wp option update mandrill_mail_default_from_name test"
+          npm run wp-env run cli "wp option update mandrill_mail_default_from_email test@test.test"
+          npm run wp-env run cli "wp option update mandrill_mail_api_debug_enabled 1"
+
       - name: Unit Test
         run: |
           npm run wp-env run composer "composer install -d './plugins/mandrill-mail/'"

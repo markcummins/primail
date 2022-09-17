@@ -12,15 +12,6 @@
  */
 class PluginCI_Mandrill extends WP_UnitTestCase
 {
-	protected function setUp()
-	{
-		update_option('mandrill_mail_api_key', getenv('MANDRILL_API_DEV_KEY'));
-		update_option('mandrill_mail_api_test_key', getenv('MANDRILL_API_DEV_KEY'));
-		update_option('mandrill_mail_default_from_name', 'test');
-		update_option('mandrill_mail_default_from_email', 'test@test.test');
-		update_option('mandrill_mail_api_debug_enabled', 1);
-	}
-
 	/**
 	 * A single example test.
 	 */

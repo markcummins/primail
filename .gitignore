@@ -1,3 +1,4 @@
+/plugins/hello.php
+/plugins/akismet/
 /plugins/mandrill-mail/vendor/
-/plugins/mandrill-mail/phpunit.xml.local
 /plugins/mandrill-mail/composer.lock

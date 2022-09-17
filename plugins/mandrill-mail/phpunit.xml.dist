@@ -13,8 +13,4 @@
 			<exclude>./tests/test-sample.php</exclude>
 		</testsuite>
 	</testsuites>
-
-	<php>
-		<env name="MANDRILL_API_DEV_KEY" value="${{ secrets.MANDRILL_API_DEV_KEY }}"/>
-	</php>
 </phpunit>
