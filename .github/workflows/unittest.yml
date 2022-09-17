@@ -19,14 +19,26 @@ jobs:
         with:
           node-version: "16.x"
 
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        id: npm-cache
+        with:
+          path: |
+            node_modules
+          key: ${{ runner.os }}-${{ matrix.node-version }}-npm-${{ hashFiles('package-lock.json') }}
+      - run: npm i
+        if: steps.npm-cache.outputs.cache-hit != 'true'
+
       - name: NPM Install
         run: npm ci
+        if: steps.npm-cache.outputs.cache-hit != 'true'
 
       - name: Install WordPress
         run: |
           npm run wp-env start
           npm run wp-env run cli 'wp plugin activate mandrill-mail'
+
       - name: Unit Test
         run: |
-          npm run wp-env run composer "composer install -d './wp-content/plugins/mandrill-mail/'"
+          npm run wp-env run composer "composer install -d './plugins/mandrill-mail/'"
           npm run wp-env run phpunit 'phpunit -c /var/www/html/wp-content/plugins/mandrill-mail/phpunit.xml.dist --verbose'
