@@ -6,7 +6,7 @@ on:
       - master
 
 env:
-  MANDRILL_API_DEV_KEY: ${{secrets.MANDRILL_API_DEV_KEY}}
+  MANDRILL_API_DEV_KEY: ${{ secrets.MANDRILL_API_DEV_KEY }}
 
 jobs:
   unit-php:
@@ -41,8 +41,9 @@ jobs:
 
       - name: Set Mandrill Options
         run: |
-          npm run wp-env run cli "wp option update mandrill_mail_api_key $MANDRILL_API_DEV_KEY"
-          npm run wp-env run cli "wp option update mandrill_mail_api_test_key $MANDRILL_API_DEV_KEY"
+          echo "MANDRILL_API_DEV_KEY: ${{env.MANDRILL_API_DEV_KEY}}"
+          npm run wp-env run cli "wp option update mandrill_mail_api_key ${{env.MANDRILL_API_DEV_KEY}}"
+          npm run wp-env run cli "wp option update mandrill_mail_api_test_key ${{env.MANDRILL_API_DEV_KEY}}"
           npm run wp-env run cli "wp option update mandrill_mail_default_from_name test"
           npm run wp-env run cli "wp option update mandrill_mail_default_from_email test@test.test"
           npm run wp-env run cli "wp option update mandrill_mail_api_debug_enabled 1"
