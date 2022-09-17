@@ -221,7 +221,7 @@ class Mandrill_Mail
    */
   private function get_from_name()
   {
-    $from_name = get_option('mandrill_mail_default_from_email');
+    $from_name = get_option('mandrill_mail_default_from_name');
     $from_name = apply_filters('wp_mail_from_name', $from_name);
 
     foreach ($this->headers as $header) {
@@ -245,7 +245,7 @@ class Mandrill_Mail
    */
   private function get_from_email()
   {
-    $from_email = get_option('mandrill_mail_default_from_name');
+    $from_email = get_option('mandrill_mail_default_from_email');
     $from_email = apply_filters('wp_mail_from', $from_email);
 
     foreach ($this->headers as $header) {
