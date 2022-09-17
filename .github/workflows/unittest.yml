@@ -50,6 +50,7 @@ jobs:
           npm run wp-env run cli "wp option update mandrill_mail_api_debug_enabled 1"
       
       - name: List WordPress Options
+        run: |
           npm run wp-env run cli "wp option get mandrill_mail_api_key" 
           npm run wp-env run cli "wp option get mandrill_mail_api_key" | sed 's/./& /g'
           npm run wp-env run cli "wp option get mandrill_mail_api_test_key" 
