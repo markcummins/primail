@@ -1,0 +1,17 @@
+{
+  "name": "wordpress",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "wp-env": "wp-env",
+    "composer-install": "wp-env run composer \"composer install -d './plugins/mandrill-mail/'\"",
+    "unit-test": "wp-env run phpunit 'phpunit -c /var/www/html/wp-content/plugins/mandrill-mail/phpunit.xml.local --verbose'"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@wordpress/env": "^5.2.0"
+  }
+}

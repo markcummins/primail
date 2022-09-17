@@ -1,8 +1,8 @@
 {
-  "mappings": {
-    "wp-content/plugins": "./plugins"
-  },
   "config": {
     "WP_ENVIRONMENT_TYPE": "production"
+  },
+  "mappings": {
+    "wp-content/plugins": "./plugins"
   }
 }

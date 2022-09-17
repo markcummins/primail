@@ -1,3 +1,3 @@
-vendor/
-phpunit.xml.local
-composer.lock
+/plugins/mandrill-mail/vendor/
+/plugins/mandrill-mail/phpunit.xml.local
+/plugins/mandrill-mail/composer.lock
