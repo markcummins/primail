@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  unit-php:
+    name: Integration Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16.x"
+
+      - name: NPM Install
+        run: npm ci
+
+      - name: Install WordPress
+        run: |
+          npm run wp-env start
+          npm run wp-env run cli 'wp plugin activate mandrill-mail'
+      - name: Unit Test
+        run: |
+          npm run wp-env run composer "composer install -d './wp-content/plugins/mandrill-mail/'"
+          npm run wp-env run phpunit 'phpunit -c /var/www/html/wp-content/plugins/mandrill-mail/phpunit.xml.dist --verbose'
