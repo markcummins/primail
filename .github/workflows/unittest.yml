@@ -41,25 +41,13 @@ jobs:
 
       - name: Set WordPress Options
         run: |
-          echo "MANDRILL_API_DEV_KEY: ${{env.MANDRILL_API_DEV_KEY}}"
-          echo "MANDRILL_API_DEV_KEY: ${{env.MANDRILL_API_DEV_KEY}}" | sed 's/./& /g'
           npm run wp-env run cli "wp option update mandrill_mail_api_key ${{env.MANDRILL_API_DEV_KEY}}"
           npm run wp-env run cli "wp option update mandrill_mail_api_test_key ${{env.MANDRILL_API_DEV_KEY}}"
           npm run wp-env run cli "wp option update mandrill_mail_default_from_name test"
           npm run wp-env run cli "wp option update mandrill_mail_default_from_email test@test.test"
           npm run wp-env run cli "wp option update mandrill_mail_api_debug_enabled 1"
-      
-      - name: List WordPress Options
-        run: |
-          npm run wp-env run cli "wp option get mandrill_mail_api_key" 
-          npm run wp-env run cli "wp option get mandrill_mail_api_key" | sed 's/./& /g'
-          npm run wp-env run cli "wp option get mandrill_mail_api_test_key" 
-          npm run wp-env run cli "wp option get mandrill_mail_api_test_key" | sed 's/./& /g'
-          npm run wp-env run cli "wp option get mandrill_mail_default_from_name" 
-          npm run wp-env run cli "wp option get mandrill_mail_default_from_email" 
-          npm run wp-env run cli "wp option get mandrill_mail_api_debug_enabled" 
 
-      # - name: Unit Test
-      #   run: |
-      #     npm run wp-env run composer "composer install -d './plugins/mandrill-mail/'"
-      #     npm run wp-env run phpunit 'phpunit -c /var/www/html/wp-content/plugins/mandrill-mail/phpunit.xml.dist --verbose'
+      - name: Unit Test
+        run: |
+          npm run wp-env run composer "composer install -d './plugins/mandrill-mail/'"
+          npm run wp-env run phpunit 'phpunit -c /var/www/html/wp-content/plugins/mandrill-mail/phpunit.xml.dist --verbose'
