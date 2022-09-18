@@ -22,23 +22,17 @@ jobs:
         with:
           node-version: "16.x"
 
-      # - name: Cache dependencies
-      #   uses: actions/cache@v2
-      #   id: npm-cache
-      #   with:
-      #     path: |
-      #       node_modules
-      #     key: ${{ runner.os }}-${{ matrix.node-version }}-npm-${{ hashFiles('package-lock.json') }}
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        id: npm-cache
+        with:
+          path: |
+            node_modules
+          key: ${{ runner.os }}-${{ matrix.node-version }}-npm-${{ hashFiles('package-lock.json') }}
 
       - name: NPM Install
         run: npm ci
-        # if: steps.npm-cache.outputs.cache-hit != 'true'
-
-      - name: Install WordPress
-        run: |
-          npm run wp-env start
-          npm run wp-env run cli 'wp plugin list'
-          npm run wp-env run cli 'wp plugin activate mandrill-mail'
+        if: steps.npm-cache.outputs.cache-hit != 'true'
 
       - name: Set WordPress Options
         run: |
