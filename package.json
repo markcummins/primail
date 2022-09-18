@@ -7,7 +7,8 @@
     "wp-env": "wp-env",
     "wp": "wp-env run cli",
     "preunit:php": "wp-env start && wp-env run composer 'install --no-interaction'",
-    "unit:php": "wp-env run phpunit 'phpunit -c /var/www/html/wp-content/plugins/mandrill-mail/phpunit.xml.dist --verbose'"
+    "unit:php": "wp-env run phpunit 'phpunit -c /var/www/html/wp-content/plugins/mandrill-mail/phpunit.xml.dist --verbose'",
+    "repeat-unit:php": "wp-env run phpunit 'phpunit -c /var/www/html/wp-content/plugins/mandrill-mail/phpunit.xml.dist --verbose'"
   },
   "author": "",
   "license": "ISC",

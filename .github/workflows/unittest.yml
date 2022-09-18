@@ -31,6 +31,11 @@ jobs:
         run: npm ci
         if: steps.npm-cache.outputs.cache-hit != 'true'
 
+      - name: Create .wp-env.override.json
+        run: |
+          touch .wp-env.override.json
+          echo '{"config": {"WP_DEBUG": true, "SCRIPT_DEBUG": true, "MANDRILL_API_DEV_KEY":"${{ secrets.MANDRILL_API_DEV_KEY }}"}}' >> .wp-env.override.json
+
       - name: Run Unit Tests
         env:
           MANDRILL_API_DEV_KEY: ${{ secrets.MANDRILL_API_DEV_KEY }}

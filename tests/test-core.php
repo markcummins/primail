@@ -15,20 +15,37 @@ class PluginCI_Mandrill extends WP_UnitTestCase
 	/**
 	 * A single example test.
 	 */
-	public function test_sample()
+	// public function test_sample()
+	// {
+	// 	// $this->assertTrue(getenv("MANDRILL_API_DEV_KEY") === 'W6hVju3p9PLKL-93rlm4RA');
+
+	// 	// $mail = $this->send(array(
+	// 	// 	'to' => 'sendto@example.com',
+	// 	// 	'subject' => 'The subject',
+	// 	// 	'message' => 'The email body content',
+	// 	// 	'headers' =>  array('Content-Type: text/html; charset=UTF-8'),
+	// 	// ));
+
+	// 	// $response = $mail->get_response();
+
+	// 	// $this->assertTrue($response['status'] === 200);
+	// }
+
+	public function test_a()
 	{
-		$this->assertTrue(getenv("MANDRILL_API_DEV_KEY") === 'W6hVju3p9PLKL-93rlm4RA');
+		var_dump(defined('SCRIPT_DEBUG') && SCRIPT_DEBUG);
 
-		// $mail = $this->send(array(
-		// 	'to' => 'sendto@example.com',
-		// 	'subject' => 'The subject',
-		// 	'message' => 'The email body content',
-		// 	'headers' =>  array('Content-Type: text/html; charset=UTF-8'),
-		// ));
+		$this->assertTrue(defined('MANDRILL_API_DEV_KEY') && MANDRILL_API_DEV_KEY === 'lolcats');
+	}
 
-		// $response = $mail->get_response();
+	public function test_b()
+	{
+		$this->assertTrue(defined('WP_DEBUG') && WP_DEBUG === true);
+	}
 
-		// $this->assertTrue($response['status'] === 200);
+	public function test_c()
+	{
+		$this->assertTrue(defined('SCRIPT_DEBUG') && SCRIPT_DEBUG === true);
 	}
 
 	/**
