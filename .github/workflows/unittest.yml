@@ -36,6 +36,7 @@ jobs:
 
       - name: Set WordPress Options
         run: |
+          npm run wp-env start
           npm run wp-env run cli "wp option update mandrill_mail_api_key ${{env.MANDRILL_API_DEV_KEY}}"
           npm run wp-env run cli "wp option update mandrill_mail_api_test_key ${{env.MANDRILL_API_DEV_KEY}}"
           npm run wp-env run cli "wp option update mandrill_mail_default_from_name test"
