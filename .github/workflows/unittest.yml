@@ -5,9 +5,6 @@ on:
     branches:
       - master
 
-env:
-  MANDRILL_API_DEV_KEY: ${{ secrets.MANDRILL_API_DEV_KEY }}
-
 jobs:
   unit-php:
     name: Integration Tests
@@ -35,12 +32,9 @@ jobs:
         if: steps.npm-cache.outputs.cache-hit != 'true'
 
       - name: Run Unit Tests
+        env:
+          MANDRILL_API_DEV_KEY: ${{ secrets.MANDRILL_API_DEV_KEY }}
         run: |
           npm run wp-env start
-          npm run wp-env run cli "wp option update mandrill_mail_api_key ${{env.MANDRILL_API_DEV_KEY}}"
-          npm run wp-env run cli "wp option update mandrill_mail_api_test_key ${{env.MANDRILL_API_DEV_KEY}}"
-          npm run wp-env run cli "wp option update mandrill_mail_default_from_name test"
-          npm run wp-env run cli "wp option update mandrill_mail_default_from_email test@test.test"
-          npm run wp-env run cli "wp option update mandrill_mail_api_debug_enabled 1"
           npm run wp-env run composer 'install --no-interaction'
           npm run wp-env run phpunit 'phpunit -c /var/www/html/wp-content/plugins/mandrill-mail/phpunit.xml.dist --verbose'

@@ -17,7 +17,8 @@ class PluginCI_Mandrill extends WP_UnitTestCase
 	 */
 	public function test_sample()
 	{
-		$this->assertTrue(get_option('mandrill_mail_api_test_key') === 'W6hVju3p9PLKL-93rlm4RA');
+		$this->assertTrue(getenv("MANDRILL_API_DEV_KEY") === 'W6hVju3p9PLKL-93rlm4RA');
+
 		// $mail = $this->send(array(
 		// 	'to' => 'sendto@example.com',
 		// 	'subject' => 'The subject',
