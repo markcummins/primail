@@ -49,5 +49,4 @@ jobs:
 
       - name: Unit Test
         run: |
-          npm run wp-env run composer "composer install -d './plugins/mandrill-mail/'"
-          npm run wp-env run phpunit 'phpunit -c /var/www/html/wp-content/plugins/mandrill-mail/phpunit.xml.dist --verbose'
+          npm run unit:php

@@ -1,13 +1,13 @@
 {
-  "name": "wordpress",
+  "name": "mandrill-mail",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "wp-env": "wp-env",
-    "composer-install": "wp-env run composer \"composer install -d './plugins/mandrill-mail/'\"",
-    "unit-test": "wp-env run phpunit 'phpunit -c /var/www/html/wp-content/plugins/mandrill-mail/phpunit.xml.dist --verbose'"
+    "wp": "wp-env run cli",
+    "preunit:php": "wp-env start && wp-env run composer 'install --no-interaction'",
+    "unit:php": "wp-env run phpunit 'phpunit -c /var/www/html/wp-content/plugins/mandrill-mail/phpunit.xml.dist --verbose'"
   },
   "author": "",
   "license": "ISC",

@@ -1,8 +1,1 @@
-{
-  "config": {
-    "WP_ENVIRONMENT_TYPE": "production"
-  },
-  "mappings": {
-    "wp-content/plugins": "./plugins"
-  }
-}
+{ "plugins": [ "." ], "config": { "WP_DEBUG": true, "SCRIPT_DEBUG": true } }

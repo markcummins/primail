@@ -1,4 +1,10 @@
-/plugins/hello.php
-/plugins/akismet/
-/plugins/mandrill-mail/vendor/
-/plugins/mandrill-mail/composer.lock
+.DS_Store
+phpcs.xml
+phpunit.xml
+Thumbs.db
+wp-cli.local.yml
+node_modules/
+vendor/
+*.sql
+*.tar.gz
+*.zip

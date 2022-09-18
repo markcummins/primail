@@ -278,6 +278,7 @@ function render_field_api_mode()
   $is_production = wp_get_environment_type() !== 'production';
 
   if ($is_production) {
+    $checked = checked(true, true, false);
     $wp_env_guide = 'https://developer.wordpress.org/reference/functions/wp_get_environment_type/';
     $wp_env_guide_link = sprintf("<a href='{$wp_env_guide}'>%s</a>",  __('Learn more', 'mandrill_mail'));
 
