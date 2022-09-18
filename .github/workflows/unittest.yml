@@ -34,7 +34,7 @@ jobs:
         run: npm ci
         if: steps.npm-cache.outputs.cache-hit != 'true'
 
-      - name: Set WordPress Options
+      - name: Run Unit Tests
         run: |
           npm run wp-env start
           npm run wp-env run cli "wp option update mandrill_mail_api_key ${{env.MANDRILL_API_DEV_KEY}}"
@@ -42,7 +42,5 @@ jobs:
           npm run wp-env run cli "wp option update mandrill_mail_default_from_name test"
           npm run wp-env run cli "wp option update mandrill_mail_default_from_email test@test.test"
           npm run wp-env run cli "wp option update mandrill_mail_api_debug_enabled 1"
-
-      - name: Unit Test
-        run: |
-          npm run unit:php
+          npm run wp-env run composer 'install --no-interaction'
+          npm run wp-env run phpunit 'phpunit -c /var/www/html/wp-content/plugins/mandrill-mail/phpunit.xml.dist --verbose'
