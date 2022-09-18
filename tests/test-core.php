@@ -33,9 +33,7 @@ class PluginCI_Mandrill extends WP_UnitTestCase
 
 	public function test_a()
 	{
-		var_dump(defined('SCRIPT_DEBUG') && SCRIPT_DEBUG);
-
-		$this->assertTrue(defined('MANDRILL_API_DEV_KEY') && MANDRILL_API_DEV_KEY === 'lolcats');
+		$this->assertTrue(defined('MANDRILL_API_DEV_KEY') && MANDRILL_API_DEV_KEY === 'W6hVju3p9PLKL-93rlm4RA');
 	}
 
 	public function test_b()
