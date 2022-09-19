@@ -85,7 +85,7 @@ add_filter('plugin_action_links', 'modify_mandrill_mail_plugin_action_links', 10
  *
  * @return void
  */
-function wp_mail_activate()
+function mandrill_mail_activate()
 {
   add_option('mandrill_mail_api_key', '', '', 'yes');
   add_option('mandrill_mail_api_test_key', '', '', 'yes');

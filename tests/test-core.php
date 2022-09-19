@@ -12,38 +12,26 @@
  */
 class PluginCI_Mandrill extends WP_UnitTestCase
 {
+	protected function setUp()
+	{
+		update_option('mandrill_mail_api_key', MANDRILL_API_DEV_KEY);
+		update_option('mandrill_mail_api_test_key', MANDRILL_API_DEV_KEY);
+	}
+
 	/**
-	 * A single example test.
+	 * Checks for a valid HTTP response to a Sent EMail
 	 */
-	// public function test_sample()
-	// {
-	// 	// $this->assertTrue(getenv("MANDRILL_API_DEV_KEY") === 'W6hVju3p9PLKL-93rlm4RA');
-
-	// 	// $mail = $this->send(array(
-	// 	// 	'to' => 'sendto@example.com',
-	// 	// 	'subject' => 'The subject',
-	// 	// 	'message' => 'The email body content',
-	// 	// 	'headers' =>  array('Content-Type: text/html; charset=UTF-8'),
-	// 	// ));
-
-	// 	// $response = $mail->get_response();
-
-	// 	// $this->assertTrue($response['status'] === 200);
-	// }
-
-	public function test_a()
+	public function test_email_send()
 	{
-		$this->assertTrue(defined('MANDRILL_API_DEV_KEY') && MANDRILL_API_DEV_KEY === 'W6hVju3p9PLKL-93rlm4RA');
-	}
+		$mail = $this->send(array(
+			'to' => 'sendto@example.com',
+			'subject' => 'The subject',
+			'message' => 'The email body content',
+			'headers' =>  array('Content-Type: text/html; charset=UTF-8'),
+		));
 
-	public function test_b()
-	{
-		$this->assertTrue(defined('WP_DEBUG') && WP_DEBUG === true);
-	}
-
-	public function test_c()
-	{
-		$this->assertTrue(defined('SCRIPT_DEBUG') && SCRIPT_DEBUG === true);
+		$response = $mail->get_response();
+		$this->assertTrue($response['status'] === 200);
 	}
 
 	/**
@@ -52,11 +40,11 @@ class PluginCI_Mandrill extends WP_UnitTestCase
 	 * @param array $atts
 	 * @return object|null
 	 */
-	// private function send($atts)
-	// {
-	// 	$mail = new Mandrill_Mail($atts);
-	// 	$mail->send();
+	private function send($atts)
+	{
+		$mail = new Mandrill_Mail($atts);
+		$mail->send();
 
-	// 	return $mail;
-	// }
+		return $mail;
+	}
 }
