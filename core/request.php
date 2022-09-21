@@ -33,8 +33,8 @@ function send($email)
   $status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
   curl_close($curl);
 
-  return array(
+  return apply_filters('mandrill_mail_response', array(
     'status' => absint($status),
     'response' => json_decode($response)
-  );
+  ));
 }

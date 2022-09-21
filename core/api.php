@@ -170,6 +170,7 @@ class Mandrill_Mail
    */
   private function get_recipients()
   {
+    $to = $this->to;
     if (!is_array($this->to)) {
       $to = explode(',', $this->to);
     }

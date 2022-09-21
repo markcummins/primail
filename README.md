@@ -14,9 +14,9 @@ This plugin is set up to send emails via Mandrill's JSON API, rather than their 
 
 ### Developers 101
 
-In terms of compatability with 'wp_mail', all the regular WordPress Mail hooks ('wp_mail_succeeded', 'wp_mail_failed') and filters (wp_mail_from, wp_mail_from_name, wp_mail_content_type) are supported. There is also an additional 'mandrill_mail' filter
+In terms of compatability with 'wp_mail', all the regular WordPress Mail hooks ('wp_mail_succeeded', 'wp_mail_failed') and filters (wp_mail_from, wp_mail_from_name, wp_mail_content_type) are supported. 
 
-There is also a 'mandrill_mail' filter which you can hook into just before a request is sent to Mandrill. For example if you want to add some merge tags (as per the [Mandrill Docs](https://mailchimp.com/developer/transactional/api/messages/send-new-message/)), you could filter the email like so.
+There is also a `mandrill_mail` filter which you can hook into just before a request is sent to Mandrill. For example if you want to add some merge tags (as per the [Mandrill Docs](https://mailchimp.com/developer/transactional/api/messages/send-new-message/)), you could filter the email like so.
 
 ``` php
 add_filter('mandrill_mail', function ($email) {
@@ -35,6 +35,8 @@ add_filter('mandrill_mail', function ($email) {
   return $email;
 });
 ```
+
+There is a `mandrill_mail_response` filter available, which you can use to filter the api response from mandrill. This could be useful for debugging and to determine that there are no error messages coming back from the api.
 
 If you want to send an email directly and bypass the 'WP_Mail function altogether, you can do so. However you will need to pass in all the data yourself, including the API Key.
 
