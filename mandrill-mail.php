@@ -33,6 +33,26 @@ function get_mandrill_mail_template_url()
   return MANDRILL_MAIL_URL;
 }
 
+/**
+ * Returns the Plugin Name
+ *
+ * @return string
+ */
+function get_mandrill_mail_plugin_name()
+{
+  return 'mandrill-mail';
+}
+
+/**
+ * Returns the Plugin Version SemVer
+ *
+ * @return string
+ */
+function get_mandrill_mail_plugin_version()
+{
+  return '1.0.0';
+}
+
 include_once MANDRILL_MAIL_DIR . "core/request.php";
 include_once MANDRILL_MAIL_DIR . "core/api.php";
 include_once MANDRILL_MAIL_DIR . "core/options.php";

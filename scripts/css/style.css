@@ -1,0 +1,45 @@
+.mandrill-mail-admin-settings-tab {
+  display: block;
+}
+
+.mandrill-mail-admin-settings-tab-content {
+  display: block;
+}
+
+.mandrill-mail-admin-settings-tab-sidebar {
+  display: none;
+}
+
+@media (min-width: 992px) {
+  .mandrill-mail-admin-settings-tab {
+    display: grid;
+    column-gap: 25px;
+    grid-template-columns: 3fr 1fr;
+  }
+
+  .mandrill-mail-admin-settings-tab-content,
+  .mandrill-mail-admin-settings-tab-sidebar {
+    display: block;
+  }
+}
+
+.mandrill-mail-admin-card {
+  padding: 3px 15px;
+  background: #fff;
+  border-radius: 3px;
+  margin-bottom: 15px;
+}
+
+.mandrill-mail-admin-card-success {
+  color: #0E8A6C;
+  background-color: #e2f1ed;
+}
+
+.mandrill-mail-admin-card-error {
+  color: #862932;
+  background-color: #f2e8e8;
+}
+
+.mandrill-mail-admin-card pre {
+  white-space: break-spaces;
+}
