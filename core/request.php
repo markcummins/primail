@@ -12,29 +12,27 @@ namespace Mandrill_Request;
 function send($email)
 {
   $email = apply_filters('mandrill_mail', $email);
+  $api = 'https://mandrillapp.com/api/1.0/messages/send';
 
-  $curl = curl_init();
-  curl_setopt_array($curl, array(
-    CURLOPT_URL => 'https://mandrillapp.com/api/1.0/messages/send',
-    CURLOPT_RETURNTRANSFER => true,
-    CURLOPT_ENCODING => '',
-    CURLOPT_MAXREDIRS => 10,
-    CURLOPT_TIMEOUT => 0,
-    CURLOPT_FOLLOWLOCATION => true,
-    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-    CURLOPT_CUSTOMREQUEST => 'POST',
-    CURLOPT_POSTFIELDS => json_encode($email),
-    CURLOPT_HTTPHEADER => array(
+  $response = wp_remote_post($api, array(
+    'method' => 'POST',
+    'timeout' => 30,
+    'redirection' => 5,
+    'headers' => array(
       'Content-Type: application/json'
     ),
+    'body' => $email,
   ));
 
-  $response = curl_exec($curl);
-  $status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-  curl_close($curl);
+  if (is_wp_error($response)) {
+    return apply_filters('mandrill_mail_response', array(
+      'status' => 500,
+      'response' => $response->get_error_message()
+    ));
+  }
 
   return apply_filters('mandrill_mail_response', array(
-    'status' => absint($status),
-    'response' => json_decode($response)
+    'status' => absint($response['response']['code']),
+    'response' => json_decode($response['body'])
   ));
 }
