@@ -6,8 +6,11 @@
  * Version: 1.0
  * Text Domain: mandrill_mail
  * Author: Mark Cummins
- * Requires PHP:      5.6.20
+ * Requires PHP: 5.6.20
  * Requires at least: 5.5.1
+ * Tested up to: 6.0.2
+ * License: GPLv2 or later (or compatible)
+ * License URI: https://www.gnu.org/licenses/gpl-2.0.html
 */
 
 define('MANDRILL_MAIL_DIR', plugin_dir_path(__FILE__));
