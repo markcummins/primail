@@ -1,4 +1,4 @@
-## Mandrill Mail
+## Primail
 
 By default, WordPress uses PHP Mail to send its emails. If you are reading this, you probably know that this isn't a perfect solution. Some hosting providers put a limit on the amount of emails that they can process, and there is no log's or records of emails once they are sent.
 
@@ -16,10 +16,10 @@ This plugin is set up to send emails via Mandrill's JSON API, rather than their 
 
 In terms of compatability with 'wp_mail', all the regular WordPress Mail hooks ('wp_mail_succeeded', 'wp_mail_failed') and filters (wp_mail_from, wp_mail_from_name, wp_mail_content_type) are supported. 
 
-There is also a `mandrill_mail` filter which you can hook into just before a request is sent to Mandrill. For example if you want to add some merge tags (as per the [Mandrill Docs](https://mailchimp.com/developer/transactional/api/messages/send-new-message/)), you could filter the email like so.
+There is also a `primail_request` filter which you can hook into just before a request is sent to Mandrill. For example if you want to add some merge tags (as per the [Mandrill Docs](https://mailchimp.com/developer/transactional/api/messages/send-new-message/)), you could filter the email like so.
 
 ``` php
-add_filter('mandrill_mail', function ($email) {
+add_filter('primail_request', function ($email) {
   $email['message']["merge"] = true;
   $email['message']["merge_language"] = 'handlebars';
   $email['message']["global_merge_vars"] = array(
@@ -36,12 +36,12 @@ add_filter('mandrill_mail', function ($email) {
 });
 ```
 
-There is a `mandrill_mail_response` filter available, which you can use to filter the api response from mandrill. This could be useful for debugging and to determine that there are no error messages coming back from the api.
+There is a `primail_response` filter available, which you can use to filter the api response from mandrill. This could be useful for debugging and to determine that there are no error messages coming back from the api.
 
 If you want to send an email directly and bypass the 'WP_Mail function altogether, you can do so. However you will need to pass in all the data yourself, including the API Key.
 
 ``` php
-  Mandrill_Request\send(array(
+  Primail_Request\send(array(
     "key" => '...',
     "message" => array(
       "headers" => '...',
@@ -56,19 +56,19 @@ If you want to send an email directly and bypass the 'WP_Mail function altogethe
 Finally, the Mandrill Settings are stored as WordPress Options. They can be retrieved as follows:
 
 ``` php
-get_option('mandrill_mail_api_key');
-get_option('mandrill_mail_api_test_key');
+get_option('primail_api_key');
+get_option('primail_api_test_key');
 
-get_option('mandrill_mail_default_from_name');
-get_option('mandrill_mail_default_from_email');
+get_option('primail_default_from_name');
+get_option('primail_default_from_email');
 
-get_option('mandrill_mail_api_debug_enabled');
+get_option('primail_api_debug_enabled');
 ```
 
 If you need to change these, you could use the 'pre_option' filter to do so. For example, to change the value of the API key, you could do the following:
 
 ``` php
-add_filter("pre_option_mandrill_mail_api_key", function ($opt) {
+add_filter("pre_option_primail_api_key", function ($opt) {
   return 'foo';
 });
 ```

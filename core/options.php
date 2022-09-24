@@ -1,10 +1,10 @@
 <?php
 
-namespace Mandrill_Options;
+namespace Primail_Options;
 
-add_filter('option_mandrill_mail_default_from_email', __NAMESPACE__ . '\filter_default_from_email');
-add_filter('option_mandrill_mail_default_from_name', __NAMESPACE__ . '\filter_default_from_name');
-add_filter('option_mandrill_mail_api_debug_enabled', __NAMESPACE__ . '\filter_api_debug_enabled');
+add_filter('option_primail_default_from_email', __NAMESPACE__ . '\filter_default_from_email');
+add_filter('option_primail_default_from_name', __NAMESPACE__ . '\filter_default_from_name');
+add_filter('option_primail_api_debug_enabled', __NAMESPACE__ . '\filter_api_debug_enabled');
 
 /**
  * Filters the default value of the Mandrill Debug option

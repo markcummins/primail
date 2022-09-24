@@ -6,7 +6,7 @@
  * 
  * @since 1.0.0
  */
-class Mandrill_Mail
+class Primail
 {
   private $key;
   private $atts;
@@ -25,10 +25,10 @@ class Mandrill_Mail
   {
     $this->atts = $atts;
 
-    $debug_mode = get_option('mandrill_mail_api_debug_enabled');
+    $debug_mode = get_option('primail_api_debug_enabled');
     $this->key = ($debug_mode === '1')
-      ? get_option('mandrill_mail_api_test_key')
-      : get_option('mandrill_mail_api_key');
+      ? get_option('primail_api_test_key')
+      : get_option('primail_api_key');
 
     $headers = (is_array($atts['headers']))
       ? $atts['headers']
@@ -99,7 +99,7 @@ class Mandrill_Mail
       $this->email['message']['auto_text'] = true;
     }
 
-    $this->response = Mandrill_Request\send($this->email);
+    $this->response = Primail_Request\send($this->email);
 
     if ($this->response['status'] !== 200) {
       do_action('wp_mail_failed', new WP_Error('wp_mail_failed', "failed with http status code {$this->response['status']}", $this->atts));
@@ -222,7 +222,7 @@ class Mandrill_Mail
    */
   private function get_from_name()
   {
-    $from_name = get_option('mandrill_mail_default_from_name');
+    $from_name = get_option('primail_default_from_name');
     $from_name = apply_filters('wp_mail_from_name', $from_name);
 
     foreach ($this->headers as $header) {
@@ -246,7 +246,7 @@ class Mandrill_Mail
    */
   private function get_from_email()
   {
-    $from_email = get_option('mandrill_mail_default_from_email');
+    $from_email = get_option('primail_default_from_email');
     $from_email = apply_filters('wp_mail_from', $from_email);
 
     foreach ($this->headers as $header) {

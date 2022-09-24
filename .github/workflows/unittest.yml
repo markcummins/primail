@@ -34,10 +34,10 @@ jobs:
       - name: Create .wp-env.override.json
         run: |
           touch .wp-env.override.json
-          echo '{"config": {"WP_DEBUG": true, "SCRIPT_DEBUG": true, "MANDRILL_API_DEV_KEY":"${{ secrets.MANDRILL_API_DEV_KEY }}"}}' >> .wp-env.override.json
+          echo '{"config": {"WP_DEBUG": true, "SCRIPT_DEBUG": true, "PRIMAIL_API_DEV_KEY":"${{ secrets.PRIMAIL_API_DEV_KEY }}"}}' >> .wp-env.override.json
 
       - name: Run Unit Tests
         run: |
           npm run wp-env start
           npm run wp-env run composer 'install --no-interaction'
-          npm run wp-env run phpunit 'phpunit -c /var/www/html/wp-content/plugins/mandrill-mail/phpunit.xml.dist --verbose'
+          npm run wp-env run phpunit 'phpunit -c /var/www/html/wp-content/plugins/primail/phpunit.xml.dist --verbose'

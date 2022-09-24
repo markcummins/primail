@@ -1,16 +1,16 @@
 <?php
 
 /**
- * Class PluginCI_Mandrill
+ * Class PluginCI_Primail
  *
  * @test
- * @package Mandrill_Mail
+ * @package Primail
  */
 
 /**
  * Sample test case.
  */
-class PluginCI_Mandrill extends WP_UnitTestCase
+class PluginCI_Primail extends WP_UnitTestCase
 {
 	private $attachment_ids;
 
@@ -18,9 +18,9 @@ class PluginCI_Mandrill extends WP_UnitTestCase
 	{
 		parent::setUp();
 
-		update_option('mandrill_mail_api_key', MANDRILL_API_DEV_KEY);
-		update_option('mandrill_mail_api_test_key', MANDRILL_API_DEV_KEY);
-		update_option('mandrill_mail_default_from_email', 'wordpress@localhost.com');
+		update_option('primail_api_key', PRIMAIL_API_DEV_KEY);
+		update_option('primail_api_test_key', PRIMAIL_API_DEV_KEY);
+		update_option('primail_default_from_email', 'wordpress@localhost.com');
 
 		$this->attachment_ids = array(
 			'img' => $this->factory->attachment->create_upload_object(DIR_TESTDATA . '/images/test-image.png', 0),
@@ -34,7 +34,7 @@ class PluginCI_Mandrill extends WP_UnitTestCase
 	public function test_email_send_to_single()
 	{
 		$mail = $this->send(array(
-			'to' => 'mandrill-mail@proton.me',
+			'to' => 'primail@proton.me',
 			'subject' => 'The subject',
 			'message' => 'The email body content',
 			'headers' =>  array('Content-Type: text/html; charset=UTF-8'),
@@ -110,7 +110,7 @@ class PluginCI_Mandrill extends WP_UnitTestCase
 	public function test_email_send_with_attachments()
 	{
 		$mail = $this->send(array(
-			'to' => 'mandrill-mail@proton.me',
+			'to' => 'primail@proton.me',
 			'subject' => 'The subject',
 			'message' => 'The email body content',
 			'headers' =>  array('Content-Type: text/html; charset=UTF-8'),
@@ -137,7 +137,7 @@ class PluginCI_Mandrill extends WP_UnitTestCase
 	 */
 	private function send($atts)
 	{
-		$mail = new Mandrill_Mail($atts);
+		$mail = new Primail($atts);
 		$mail->send();
 
 		return $mail;

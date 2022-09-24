@@ -1,10 +1,11 @@
 <?php
 
 /*
- * Plugin Name: Mandrill Mail
- * Description: Redirects EMails from WP_Mail to Mandrill  
+ * Plugin Name: Primail - Mandrill Email Connector for WordPress
+ * Description: Sends EMails from WP_Mail to Mandrill 
+ * Description: The Primail plugin allows you to connect your WordPress site with Mandrill for improved email delivery and reliability
  * Version: 1.0
- * Text Domain: mandrill_mail
+ * Text Domain: primail
  * Author: Mark Cummins
  * Requires PHP: 5.6.20
  * Requires at least: 5.5.1
@@ -13,17 +14,17 @@
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
 */
 
-define('MANDRILL_MAIL_DIR', plugin_dir_path(__FILE__));
-define('MANDRILL_MAIL_URL', plugin_dir_url(__FILE__));
+define('PRIMAIL_DIR', plugin_dir_path(__FILE__));
+define('PRIMAIL_URL', plugin_dir_url(__FILE__));
 
 /**
  * Returns the Plugin Directory Path
  *
  * @return string
  */
-function get_mandrill_mail_template_dir()
+function get_primail_template_dir()
 {
-  return MANDRILL_MAIL_DIR;
+  return PRIMAIL_DIR;
 }
 
 /**
@@ -31,9 +32,9 @@ function get_mandrill_mail_template_dir()
  *
  * @return string
  */
-function get_mandrill_mail_template_url()
+function get_primail_template_url()
 {
-  return MANDRILL_MAIL_URL;
+  return PRIMAIL_URL;
 }
 
 /**
@@ -41,9 +42,9 @@ function get_mandrill_mail_template_url()
  *
  * @return string
  */
-function get_mandrill_mail_plugin_name()
+function get_primail_plugin_name()
 {
-  return 'mandrill-mail';
+  return 'primail';
 }
 
 /**
@@ -51,15 +52,15 @@ function get_mandrill_mail_plugin_name()
  *
  * @return string
  */
-function get_mandrill_mail_plugin_version()
+function get_primail_plugin_version()
 {
   return '1.0.0';
 }
 
-include_once MANDRILL_MAIL_DIR . "core/request.php";
-include_once MANDRILL_MAIL_DIR . "core/api.php";
-include_once MANDRILL_MAIL_DIR . "core/options.php";
-include_once MANDRILL_MAIL_DIR . "core/settings.php";
+include_once PRIMAIL_DIR . "core/request.php";
+include_once PRIMAIL_DIR . "core/api.php";
+include_once PRIMAIL_DIR . "core/options.php";
+include_once PRIMAIL_DIR . "core/settings.php";
 
 /**
  * Intercepts the WP Mail EMail and sends the email to Mandrill EMail
@@ -69,11 +70,11 @@ include_once MANDRILL_MAIL_DIR . "core/settings.php";
  * 
  * @return bool
  */
-function mandrill_mail_intercept($null, $atts)
+function primail_intercept($null, $atts)
 {
-  return mandrill_mail($atts);
+  return primail($atts);
 }
-add_filter('pre_wp_mail', 'mandrill_mail_intercept', 10, 2);
+add_filter('pre_wp_mail', 'primail_intercept', 10, 2);
 
 /**
  * Add Settings link to plugins area.
@@ -82,18 +83,18 @@ add_filter('pre_wp_mail', 'mandrill_mail_intercept', 10, 2);
  * @param string $file  Current plugin basename.
  * @return array Processed links.
  */
-function modify_mandrill_mail_plugin_action_links($links, $file)
+function modify_primail_plugin_action_links($links, $file)
 {
-  if ($file !== 'mandrill-mail/mandrill-mail.php') {
+  if ($file !== 'primail/primail.php') {
     return $links;
   }
 
-  $query_args = array('page' => 'mandrill-mail-settings');
+  $query_args = array('page' => 'primail-settings');
   $settings_link = get_admin_url('', 'options-general.php');
 
   $settings = array(
     'link' => add_query_arg($query_args, $settings_link),
-    'label' => __('Settings', 'mandrill_mail')
+    'label' => __('Settings',  "primail")
   );
 
   return array_merge($links, array(
@@ -101,18 +102,18 @@ function modify_mandrill_mail_plugin_action_links($links, $file)
   ));
 }
 
-add_filter('plugin_action_links', 'modify_mandrill_mail_plugin_action_links', 10, 2);
+add_filter('plugin_action_links', 'modify_primail_plugin_action_links', 10, 2);
 
 /**
  * Sets the Default Options for when the Plugin is Activated
  *
  * @return void
  */
-function mandrill_mail_activate()
+function primail_activate()
 {
-  add_option('mandrill_mail_api_key', '', '', 'yes');
-  add_option('mandrill_mail_api_test_key', '', '', 'yes');
-  add_option('mandrill_mail_api_debug_enabled', 1, '', 'yes');
+  add_option('primail_api_key', '', '', 'yes');
+  add_option('primail_api_test_key', '', '', 'yes');
+  add_option('primail_api_debug_enabled', 1, '', 'yes');
 
   $sitename   = wp_parse_url(network_home_url(), PHP_URL_HOST);
   $from_email = 'wordpress@';
@@ -125,12 +126,12 @@ function mandrill_mail_activate()
     $from_email .= $sitename;
   }
   $from_email = apply_filters('wp_mail_from', $from_email);
-  add_option('mandrill_mail_default_from_email', $from_email, '', 'yes');
+  add_option('primail_default_from_email', $from_email, '', 'yes');
 
   $from_name = apply_filters('wp_mail_from_name', 'WordPress');
-  add_option('mandrill_mail_default_from_name', $from_name, '', 'yes');
+  add_option('primail_default_from_name', $from_name, '', 'yes');
 }
-register_activation_hook(__FILE__, 'mandrill_mail_activate');
+register_activation_hook(__FILE__, 'primail_activate');
 
 /**
  * Sends an email via the Mandrill API
@@ -138,8 +139,8 @@ register_activation_hook(__FILE__, 'mandrill_mail_activate');
  * @param array $atts
  * @return bool Whether the email was sent successfully.
  */
-function mandrill_mail($atts)
+function primail($atts)
 {
-  $mail = new Mandrill_Mail($atts);
+  $mail = new Primail($atts);
   return $mail->send();
 }

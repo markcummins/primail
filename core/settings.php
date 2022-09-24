@@ -1,6 +1,6 @@
 <?php
 
-namespace Mandrill_Mail_Settings;
+namespace Primail_Settings;
 
 add_action('init', function () {
   if (is_admin()) {
@@ -21,10 +21,10 @@ function enqueue_scripts($hook)
 {
   $admin_slug = get_slug();
   if ($hook === "settings_page_{$admin_slug}") {
-    $version = get_mandrill_mail_plugin_version();
-    $base_url = get_mandrill_mail_template_url();
+    $version = get_primail_plugin_version();
+    $base_url = get_primail_template_url();
 
-    wp_enqueue_style('mandrill-mail-admin-style', "{$base_url}scripts/css/style.css", array(), $version);
+    wp_enqueue_style('primail-admin-style', "{$base_url}scripts/css/style.css", array(), $version);
   }
 }
 
@@ -35,7 +35,7 @@ function enqueue_scripts($hook)
  */
 function admin_notice_debug_mode()
 {
-  $debug_mode = get_option('mandrill_mail_api_debug_enabled');
+  $debug_mode = get_option('primail_api_debug_enabled');
   if ($debug_mode !== '1') {
     return;
   }
@@ -43,11 +43,11 @@ function admin_notice_debug_mode()
   $settings_page_link = sprintf(
     '<a href="%s">%s</a>',
     get_settings_page_link(),
-    __('Debug Mode', 'mandrill_mail'),
+    __('Debug Mode',  "primail"),
   );
 
   $message = sprintf(
-    __('Notice! Emails are not sending, as `%s` is enabled ', 'mandrill_mail'),
+    __('Notice! Emails are not sending, as `%s` is enabled ',  "primail"),
     $settings_page_link
   );
 
@@ -76,8 +76,8 @@ function get_settings_page_link()
 function add_settings_page()
 {
   add_options_page(
-    'Mandrill Mail Settings',
-    'Mandrill Mail',
+    'Primail Settings',
+    'Primail',
     'manage_options',
     get_slug(),
     __NAMESPACE__ . '\settings',
@@ -93,15 +93,15 @@ function add_settings_page()
 function register_settings()
 {
   add_settings_section(
-    'mandrill_mail_settings_api',
+    'primail_settings_api',
     '',
     __NAMESPACE__ . '\section_settings_api',
-    'mandrill_mail_mandrill_mail_settings'
+    'primail_primail_settings'
   );
 
   register_setting(
     get_option_group(),
-    'mandrill_mail_default_from_email',
+    'primail_default_from_email',
     array(
       'type' => 'string',
       'description' => 'The Default From EMail Field',
@@ -111,16 +111,16 @@ function register_settings()
   );
 
   add_settings_field(
-    'mandrill_mail_default_from_email',
-    __('From Email Address', 'mandrill_mail'),
+    'primail_default_from_email',
+    __('From Email Address',  "primail"),
     __NAMESPACE__ . '\render_field_from_email',
-    'mandrill_mail_mandrill_mail_settings',
-    'mandrill_mail_settings_api'
+    'primail_primail_settings',
+    'primail_settings_api'
   );
 
   register_setting(
     get_option_group(),
-    'mandrill_mail_default_from_name',
+    'primail_default_from_name',
     array(
       'type' => 'string',
       'description' => 'The Default From Name Field',
@@ -130,16 +130,16 @@ function register_settings()
   );
 
   add_settings_field(
-    'mandrill_mail_default_from_name',
-    __('From Name', 'mandrill_mail'),
+    'primail_default_from_name',
+    __('From Name',  "primail"),
     __NAMESPACE__ . '\render_field_from_name',
-    'mandrill_mail_mandrill_mail_settings',
-    'mandrill_mail_settings_api'
+    'primail_primail_settings',
+    'primail_settings_api'
   );
 
   register_setting(
     get_option_group(),
-    'mandrill_mail_api_key',
+    'primail_api_key',
     array(
       'type' => 'string',
       'description' => 'The Mandrill API Key',
@@ -150,16 +150,16 @@ function register_settings()
   );
 
   add_settings_field(
-    'mandrill_mail_field_api_key',
-    __('API Key', 'mandrill_mail'),
+    'primail_field_api_key',
+    __('API Key',  "primail"),
     __NAMESPACE__ .  '\render_field_api_key',
-    'mandrill_mail_mandrill_mail_settings',
-    'mandrill_mail_settings_api'
+    'primail_primail_settings',
+    'primail_settings_api'
   );
 
   register_setting(
     get_option_group(),
-    'mandrill_mail_api_test_key',
+    'primail_api_test_key',
     array(
       'type' => 'string',
       'description' => 'The Mandrill API Test Key',
@@ -170,16 +170,16 @@ function register_settings()
   );
 
   add_settings_field(
-    'mandrill_mail_field_api_test_key',
-    __('API Test Key', 'mandrill_mail'),
+    'primail_field_api_test_key',
+    __('API Test Key',  "primail"),
     __NAMESPACE__ . '\render_field_api_test_key',
-    'mandrill_mail_mandrill_mail_settings',
-    'mandrill_mail_settings_api'
+    'primail_primail_settings',
+    'primail_settings_api'
   );
 
   register_setting(
     get_option_group(),
-    'mandrill_mail_api_debug_enabled',
+    'primail_api_debug_enabled',
     array(
       'type' => 'boolean',
       'description' => 'The Mandrill Mode',
@@ -189,11 +189,11 @@ function register_settings()
   );
 
   add_settings_field(
-    'mandrill_mail_api_debug_enabled',
-    __('Debug Mode', 'mandrill_mail'),
+    'primail_api_debug_enabled',
+    __('Debug Mode',  "primail"),
     __NAMESPACE__ .  '\render_field_api_mode',
-    'mandrill_mail_mandrill_mail_settings',
-    'mandrill_mail_settings_api'
+    'primail_primail_settings',
+    'primail_settings_api'
   );
 }
 
@@ -204,15 +204,15 @@ function register_settings()
  */
 function render_field_from_email()
 {
-  $value = get_option('mandrill_mail_default_from_email');
+  $value = get_option('primail_default_from_email');
 
   printf(
     '<input type="email" name="%s" value="%s" required/>',
-    'mandrill_mail_default_from_email',
+    'primail_default_from_email',
     $value
   );
 
-  $description = __('This email address will be used in the `From` field.', 'mandrill_mail');
+  $description = __('This email address will be used in the `From` field.',  "primail");
   echo "<p class='description'>{$description}</p>";
 }
 
@@ -223,15 +223,15 @@ function render_field_from_email()
  */
 function render_field_from_name()
 {
-  $value = get_option('mandrill_mail_default_from_name');
+  $value = get_option('primail_default_from_name');
 
   printf(
     '<input type="text" name="%s" value="%s" required/>',
-    'mandrill_mail_default_from_name',
+    'primail_default_from_name',
     $value
   );
 
-  $description = __('This text will be used in the `FROM` field', 'mandrill_mail');
+  $description = __('This text will be used in the `FROM` field',  "primail");
   echo "<p class='description'>{$description}</p>";
 }
 
@@ -242,15 +242,15 @@ function render_field_from_name()
  */
 function render_field_api_key()
 {
-  $api_key = get_option('mandrill_mail_api_key');
+  $api_key = get_option('primail_api_key');
 
   printf(
     '<input type="text" name="%s" value="%s"/>',
-    'mandrill_mail_api_key',
+    'primail_api_key',
     $api_key
   );
 
-  $description = __('The Mandrill API Key', 'mandrill_mail');
+  $description = __('The Mandrill API Key',  "primail");
 
   echo "<p class='description'>{$description}</p>";
 }
@@ -262,15 +262,15 @@ function render_field_api_key()
  */
 function render_field_api_test_key()
 {
-  $api_key = get_option('mandrill_mail_api_test_key');
+  $api_key = get_option('primail_api_test_key');
 
   printf(
     '<input type="text" name="%s" value="%s"/>',
-    'mandrill_mail_api_test_key',
+    'primail_api_test_key',
     $api_key
   );
 
-  $description = __('The Mandrill Test API Key, which will be used when debug mode is enabled', 'mandrill_mail');
+  $description = __('The Mandrill Test API Key, which will be used when debug mode is enabled',  "primail");
   echo "<p class='description'>{$description}</p>";
 }
 
@@ -281,7 +281,7 @@ function render_field_api_test_key()
  */
 function render_field_api_mode()
 {
-  $debug_mode_enabled = get_option('mandrill_mail_api_debug_enabled');
+  $debug_mode_enabled = get_option('primail_api_debug_enabled');
   $checked = checked('1', $debug_mode_enabled, false);
 
   $env_message = "";
@@ -290,11 +290,11 @@ function render_field_api_mode()
   if ($is_production) {
     $checked = checked(true, true, false);
     $wp_env_guide = 'https://developer.wordpress.org/reference/functions/wp_get_environment_type/';
-    $wp_env_guide_link = sprintf("<a href='{$wp_env_guide}'>%s</a>",  __('Learn more', 'mandrill_mail'));
+    $wp_env_guide_link = sprintf("<a href='{$wp_env_guide}'>%s</a>",  __('Learn more',  "primail"));
 
     // Debug Mode
     $message = sprintf(
-      __('Debug Mode has been automatically enabled, as this site is not in `Production Mode` (%s)', 'mandrill_mail'),
+      __('Debug Mode has been automatically enabled, as this site is not in `Production Mode` (%s)',  "primail"),
       $wp_env_guide_link
     );
 
@@ -303,13 +303,13 @@ function render_field_api_mode()
 
   $field = sprintf(
     '<input type="checkbox" name="%s" value="%s" %s %s/>',
-    'mandrill_mail_api_debug_enabled',
+    'primail_api_debug_enabled',
     '1',
     $checked,
     $is_production ? "disabled" : ""
   );
 
-  $description = __('Debug Mode Enabled', 'mandrill_mail');
+  $description = __('Debug Mode Enabled',  "primail");
   echo "<fieldset><label>{$field}&nbsp;{$description}</label></fieldset>{$env_message}";
 }
 
@@ -327,7 +327,7 @@ function settings()
     : null;
 
   $sent_email = array();
-  if (isset($_POST['mandrill_mail_form_submit']) && check_admin_referer('mandrill_mail_form_nonce')) {
+  if (isset($_POST['primail_form_submit']) && check_admin_referer('primail_form_nonce')) {
     $response = send_test_email();
     if (is_wp_error($response)) {
       echo admin_notice("<p>{$response->get_error_message()}</p>", 'error');
@@ -338,8 +338,8 @@ function settings()
       );
 
       echo ($sent_email['response']['status'] === 200)
-        ? admin_notice("<p>" . __('Message Sent.', 'mandrill_mail') . "</p>", 'success')
-        : admin_notice("<p>" . __('Message Failed to send. See the log details below for more information.', 'mandrill_mail') . "</p>", 'error');
+        ? admin_notice("<p>" . __('Message Sent.',  "primail") . "</p>", 'success')
+        : admin_notice("<p>" . __('Message Failed to send. See the log details below for more information.',  "primail") . "</p>", 'error');
     }
   }
 
@@ -347,14 +347,14 @@ function settings()
   echo "<h2>Mandrill Mail Settings</h2>";
 
   echo "<nav class='nav-tab-wrapper'>
-          <a href='?page={$slug}' class='nav-tab" . (($tab === null) ? ' nav-tab-active' : '') . "'>" . __('Settings', 'mandrill_mail') . "</a>
-          <a href='?page={$slug}&tab=test' class='nav-tab" . (($tab === 'test') ? ' nav-tab-active' : '') . "'>" . __('Debug', 'mandrill_mail') . "</a>
+          <a href='?page={$slug}' class='nav-tab" . (($tab === null) ? ' nav-tab-active' : '') . "'>" . __('Settings',  "primail") . "</a>
+          <a href='?page={$slug}&tab=test' class='nav-tab" . (($tab === 'test') ? ' nav-tab-active' : '') . "'>" . __('Debug',  "primail") . "</a>
         </nav>
         <br/>";
 
-  echo "<div class='mandrill-mail-admin-settings-tab'>";
-  echo "<div class='mandrill-mail-admin-settings-tab-content'>";
-  echo "<div class='mandrill-mail-admin-card'>";
+  echo "<div class='primail-admin-settings-tab'>";
+  echo "<div class='primail-admin-settings-tab-content'>";
+  echo "<div class='primail-admin-card'>";
 
   if ($tab === null) {
     echo get_tab_settings();
@@ -367,7 +367,7 @@ function settings()
   echo "</div>";
   echo "</div>";
   echo "<div>";
-  echo "<div class='mandrill-mail-admin-settings-tab-sidebar'>";
+  echo "<div class='primail-admin-settings-tab-sidebar'>";
   echo admin_sidebar();
   echo "</div>";
   echo "</div>";
@@ -379,14 +379,14 @@ function settings()
       ? 'success'
       : 'error';
 
-    echo "<div class='mandrill-mail-admin-card mandrill-mail-admin-card-{$api_card_class}'>";
+    echo "<div class='primail-admin-card primail-admin-card-{$api_card_class}'>";
     echo '<h3>API Request</h3>';
     echo "<pre>";
     echo json_encode($sent_email['request'], JSON_PRETTY_PRINT);
     echo '</pre>';
     echo '</div>';
 
-    echo "<div class='mandrill-mail-admin-card mandrill-mail-admin-card-{$api_card_class}'>";
+    echo "<div class='primail-admin-card primail-admin-card-{$api_card_class}'>";
     echo '<h3>API Response</h3>';
     echo "<pre>";
     echo json_encode($sent_email['response'], JSON_PRETTY_PRINT);
@@ -405,15 +405,15 @@ function get_tab_settings()
   ob_start();
 
   $mandrill_guide = 'https://mailchimp.com/developer/transactional/guides/quick-start/';
-  $mandrill_guide_link = sprintf("<a href='{$mandrill_guide}'>%s</a>",  __('quick start guide', 'mandrill_mail'));
+  $mandrill_guide_link = sprintf("<a href='{$mandrill_guide}'>%s</a>",  __('quick start guide',  "primail"));
 
   $msg = array(
-    __('Use the API details provided by Mandrill to configure the following settings', 'mandrill_mail'),
-    sprintf(__('See the %s for generating an API Key and for more general information and options.', 'mandrill_mail'), $mandrill_guide_link),
+    __('Use the API details provided by Mandrill to configure the following settings',  "primail"),
+    sprintf(__('See the %s for generating an API Key and for more general information and options.',  "primail"), $mandrill_guide_link),
   );
 
   echo "<div style='width: 100%; max-width: 640px;'>";
-  echo "<h3>" . __('Configuration Settings', 'mandrill_mail') . "</h3>";
+  echo "<h3>" . __('Configuration Settings',  "primail") . "</h3>";
   echo "<p>" . implode(' ', $msg) . "</p>";
   echo "</div>";
 
@@ -423,9 +423,9 @@ function get_tab_settings()
   settings_fields(get_option_group());
 
   // Prints the Heading and Settings Page Table
-  do_settings_sections('mandrill_mail_mandrill_mail_settings');
+  do_settings_sections('primail_primail_settings');
 
-  echo submit_button(__('Save Settings', 'mandrill_mail'));
+  echo submit_button(__('Save Settings',  "primail"));
   echo "</form>";
 
   $tab_html = ob_get_contents();
@@ -441,41 +441,41 @@ function get_tab_settings()
  */
 function admin_sidebar()
 {
-  $plugin_name = get_mandrill_mail_plugin_name();
+  $plugin_name = get_primail_plugin_name();
 
   $links = array(
-    'docs' => sprintf("<a target='_blank' href='https://wordpress.org/support/plugin/mandrill-mail/'>%s</a>", __('Mandrill Mail', 'mandrill_mail')),
-    'rate' => sprintf("<a href='https://wordpress.org/support/plugin/{$plugin_name}/reviews/#new-post' target='_blank'>%s</a>", __('rating', 'mandrill_mail')),
-    'forum' => sprintf("<a href='https://wordpress.org/support/plugin/{$plugin_name}/' target='_blank'>%s</a>", __('Support Forum', 'mandrill_mail')),
-    'coffee' => sprintf("<a target='_blank' href='https://paypal.me/markcummins87?country.x=IE&locale.x=en_US'>%s</a>", __('buy me a coffee', 'mandrill_mail')),
+    'docs' => sprintf("<a target='_blank' href='https://wordpress.org/support/plugin/primail/'>%s</a>", __('Mandrill Mail',  "primail")),
+    'rate' => sprintf("<a href='https://wordpress.org/support/plugin/{$plugin_name}/reviews/#new-post' target='_blank'>%s</a>", __('rating',  "primail")),
+    'forum' => sprintf("<a href='https://wordpress.org/support/plugin/{$plugin_name}/' target='_blank'>%s</a>", __('Support Forum',  "primail")),
+    'coffee' => sprintf("<a target='_blank' href='https://paypal.me/markcummins87?country.x=IE&locale.x=en_US'>%s</a>", __('buy me a coffee',  "primail")),
   );
 
   return "<div>
-            <div class='mandrill-mail-admin-card' style='min-width: inherit;'>
+            <div class='primail-admin-card' style='min-width: inherit;'>
               <h3 style='display: flex; align-items: center;'>
-                <span class='dashicons dashicons-book' style='margin-right: 8px;'></span> " . __('Docs', 'mandrill_mail') . "
+                <span class='dashicons dashicons-book' style='margin-right: 8px;'></span> " . __('Docs',  "primail") . "
               </h3>
               <div>
-                <p>" . sprintf(__('Please visit the %s plugins documentation page to learn how to use this plugin.', 'mandrill_mail'), $links['docs']) . "</p>
+                <p>" . sprintf(__('Please visit the %s plugins documentation page to learn how to use this plugin.',  "primail"), $links['docs']) . "</p>
               </div>
             </div>
-            <div class='mandrill-mail-admin-card' style='min-width: inherit;'>
+            <div class='primail-admin-card' style='min-width: inherit;'>
               <h3 style='display: flex; align-items: center;'>
-                <span class='dashicons dashicons-sos' style='margin-right: 8px;'></span> " . __('Support', 'mandrill_mail') . "
+                <span class='dashicons dashicons-sos' style='margin-right: 8px;'></span> " . __('Support',  "primail") . "
               </h3>
               <div>
                 <p>" . sprintf(__('Having issues or difficulties? You can post your issue on the %s, or drop your feature requests there if you have them!'), $links['forum']) . "</p>
               </div>
             </div>
-            <div class='mandrill-mail-admin-card' style='min-width: inherit;'>
+            <div class='primail-admin-card' style='min-width: inherit;'>
               <h3 style='display: flex; align-items: center;'>
-                <span class='dashicons dashicons-megaphone' style='margin-right: 8px;'></span> " . __('Feedback', 'mandrill_mail') . "
+                <span class='dashicons dashicons-megaphone' style='margin-right: 8px;'></span> " . __('Feedback',  "primail") . "
               </h3>
               <div>
-                " . sprintf(__('Like the plugin? Please give us a %s', 'mandrill_mail'), $links['rate']) . " (" . __('5 Stars would be nice', 'mandrill_mail') . " 😂) 
+                " . sprintf(__('Like the plugin? Please give us a %s', 'primail'), $links['rate']) . " (" . __('5 Stars would be nice',  "primail") . " 😂) 
                 <div>
                  <p>
-                  <a href='https://wordpress.org/support/plugin/mandrill-mail/reviews/?filter=5' style='font-size: 0;' target='_blank'>
+                  <a href='https://wordpress.org/support/plugin/primail/reviews/?filter=5' style='font-size: 0;' target='_blank'>
                     <span class='dashicons dashicons-star-filled'></span>
                     <span class='dashicons dashicons-star-filled'></span>
                     <span class='dashicons dashicons-star-filled'></span>
@@ -486,13 +486,13 @@ function admin_sidebar()
                 </div>
               </div>
             </div>
-            <div class='mandrill-mail-admin-card' style='min-width: inherit;'>
+            <div class='primail-admin-card' style='min-width: inherit;'>
               <h3 style='display: flex; align-items: center;'>
-                <span class='dashicons dashicons-coffee' style='margin-right: 8px;'></span> " . __('Buy Me a Coffee', 'mandrill_mail') . "
+                <span class='dashicons dashicons-coffee' style='margin-right: 8px;'></span> " . __('Buy Me a Coffee',  "primail") . "
               </h3>
               <div>
-                <p>" . __('Found this plugin useful? As much fun as it was creating it, it did take a rediculous amount of time', 'mandrill_mail') . "🙈.</p>
-                <p>" . sprintf(__('If you would like to support my work, you can %s.', 'mandrill_mail'), $links['coffee']) . " " . __('Thank You!', 'mandrill_mail') . "</p>
+                <p>" . __('Found this plugin useful? As much fun as it was creating it, it did take a rediculous amount of time',  "primail") . "🙈.</p>
+                <p>" . sprintf(__('If you would like to support my work, you can %s.', 'primail'), $links['coffee']) . " " . __('Thank You!',  "primail") . "</p>
               </div>
             </div>
           </div>";
@@ -520,13 +520,13 @@ function get_tab_email_test()
   ob_start();
 
   $msg = array(
-    __('You can use this section to send a very basic test email.', 'mandrill_mail'),
-    __('You will be able to see the details of the request and the response from Mandrill.', 'mandrill_mail'),
-    __('You can use this section to debug and test that your emails are being sent.', 'mandrill_mail'),
+    __('You can use this section to send a very basic test email.',  "primail"),
+    __('You will be able to see the details of the request and the response from Mandrill.',  "primail"),
+    __('You can use this section to debug and test that your emails are being sent.',  "primail"),
   );
 
   echo "<div style='width: 100%; max-width: 640px;'>";
-  echo "<h3>" . __('Test Email', 'mandrill_mail') . "</h3>";
+  echo "<h3>" . __('Test Email',  "primail") . "</h3>";
   echo "<p>" . implode(' ', $msg) . "</p>";
   echo "</div>";
 
@@ -537,30 +537,30 @@ function get_tab_email_test()
             <th scope='row'>To:</th>
             <td>
               <input type='email' required name='to' style='width: 100%; max-width: 400px;' value='{$to}'><br>
-              <p class='description'>" . __("Enter the recipient's email address", 'mandrill_mail') . "</p>
+              <p class='description'>" . __("Enter the recipient's email address",  "primail") . "</p>
             </td>
           </tr>
           <tr valign='top'>
             <th scope='row'>Subject:</th>
             <td>
               <input type='text' name='subject' required style='width: 100%; max-width: 400px;' value='{$subject}'><br>
-              <p class='description'>" . __('Enter a subject for your message', 'mandrill_mail') . "</p>
+              <p class='description'>" . __('Enter a subject for your message',  "primail") . "</p>
             </td>
           </tr>
           <tr valign='top'>
             <th scope='row'>Message:</th>
             <td>
               <textarea name='message' required style='width: 100%; max-width: 400px;' rows='5'>{$message}</textarea>
-              <p class='description'>" . __('Write your email message', 'mandrill_mail') . "</p>
+              <p class='description'>" . __('Write your email message',  "primail") . "</p>
             </td>
           </tr>
         </tbody>
         </table>";
 
-  wp_nonce_field('mandrill_mail_form_nonce');
+  wp_nonce_field('primail_form_nonce');
 
-  echo "<input type='hidden' name='mandrill_mail_form_submit' value='submit' />";
-  echo submit_button(__('Send Test', 'mandrill_mail'));
+  echo "<input type='hidden' name='primail_form_submit' value='submit' />";
+  echo submit_button(__('Send Test',  "primail"));
   echo "</form>";
 
   $tab_html = ob_get_contents();
@@ -572,32 +572,32 @@ function get_tab_email_test()
 /**
  * Sends a Test EMail
  *
- * @return Mandrill_Mail/WP_Error
+ * @return Primail/WP_Error
  */
 function send_test_email()
 {
   $to = sanitize_text_field($_POST['to']);
   if (!is_email($to)) {
     $error = new \WP_Error();
-    $error->add('empty', __('A Valid EMail Address is required', 'mandrill_mail'));
+    $error->add('empty', __('A Valid EMail Address is required',  "primail"));
     return $error;
   }
 
   $subject = sanitize_text_field($_POST['subject']);
   if (empty($subject)) {
     $error = new \WP_Error();
-    $error->add('empty', __('Subject is a required field', 'mandrill_mail'));
+    $error->add('empty', __('Subject is a required field',  "primail"));
     return $error;
   }
 
   $message = sanitize_textarea_field($_POST['message']);
   if (empty($message)) {
     $error = new \WP_Error();
-    $error->add('empty', __('Message is a required field', 'mandrill_mail'));
+    $error->add('empty', __('Message is a required field',  "primail"));
     return $error;
   }
 
-  $mail = new \Mandrill_Mail(array(
+  $mail = new \Primail(array(
     'to' => $to,
     'subject' => $subject,
     'message' => $message,
@@ -615,7 +615,7 @@ function send_test_email()
  */
 function get_slug()
 {
-  return 'mandrill-mail-settings';
+  return 'primail-settings';
 }
 
 /**
@@ -625,7 +625,7 @@ function get_slug()
  */
 function get_option_group()
 {
-  return 'mandrill_mail_settings';
+  return 'primail_settings';
 }
 
 /**

@@ -1,20 +1,23 @@
 <?php
+
 /**
  * Class SampleTest
  *
- * @package Mandrill_Mail
+ * @package Primail
  */
 
 /**
  * Sample test case.
  */
-class SampleTest extends WP_UnitTestCase {
+class SampleTest extends WP_UnitTestCase
+{
 
 	/**
 	 * A single example test.
 	 */
-	public function test_sample() {
+	public function test_sample()
+	{
 		// Replace this with some actual testing code.
-		$this->assertTrue( true );
+		$this->assertTrue(true);
 	}
 }
