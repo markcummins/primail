@@ -10,7 +10,8 @@
     "preunit:php": "wp-env start && wp-env run composer 'install --no-interaction'",
     "unit:php": "wp-env run phpunit 'phpunit -c /var/www/html/wp-content/plugins/primail/phpunit.xml.dist --verbose'",
     "repeat-unit:php": "wp-env run phpunit 'phpunit -c /var/www/html/wp-content/plugins/primail/phpunit.xml.dist --verbose'",
-    "archive": "git archive --format zip --output \"primail.zip\" master -0"
+    "archive": "git archive --format zip --output \"primail.zip\" master -0",
+    "i18n": "npm run wp-env run cli \"bash -c 'cd ./wp-content/plugins/primail/ && wp i18n make-pot . languages/primail.pot'\""
   },
   "author": "",
   "license": "ISC",
