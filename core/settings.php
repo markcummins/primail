@@ -279,13 +279,12 @@ function render_field_api_mode()
 
   if ($is_production) {
     $checked = checked(true, true, false);
-    $wp_env_guide = 'https://developer.wordpress.org/reference/functions/wp_get_environment_type/';
-    $wp_env_guide_link = sprintf("<a href='%s'>%s</a>", esc_attr($wp_env_guide), esc_html__('Learn more',  "primail"));
 
     // Debug Mode
     $message = sprintf(
-      esc_html__('Debug Mode has been automatically enabled, as this site is not in `Production Mode` (%s)',  "primail"),
-      esc_attr($wp_env_guide_link)
+      __('Debug Mode has been automatically enabled, as this site is not in `Production Mode` (<a href="%s">%s</a>)',  "primail"),
+      'https://developer.wordpress.org/reference/functions/wp_get_environment_type/',
+      esc_html__('Learn more',  "primail")
     );
 
     $env_message = "<p class='description'>{$message}</p>";
