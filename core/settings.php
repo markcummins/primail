@@ -40,18 +40,13 @@ function admin_notice_debug_mode()
     return;
   }
 
-  $settings_page_link = sprintf(
-    '<a href="%s">%s</a>',
-    get_settings_page_link(),
-    __('Debug Mode',  "primail"),
-  );
-
   $message = sprintf(
-    __('Notice! Emails are not sending, as `%s` is enabled ',  "primail"),
-    $settings_page_link
+    __('Notice! Emails are not sending, as `<a href="%s">%s</a>` is enabled ',  "primail"),
+    esc_attr(get_settings_page_link()),
+    esc_html__('Debug Mode',  "primail"),
   );
 
-  echo admin_notice("<p>{$message}</p>", 'warning');
+  echo admin_notice($message, 'warning');
 }
 
 /**
@@ -209,11 +204,10 @@ function render_field_from_email()
   printf(
     '<input type="email" name="%s" value="%s" required/>',
     'primail_default_from_email',
-    $value
+    esc_attr($value)
   );
 
-  $description = __('This email address will be used in the `From` field.',  "primail");
-  echo "<p class='description'>{$description}</p>";
+  echo sprintf("<p class='description'>%s</p>", esc_html__('This email address will be used in the `From` field.',  "primail"));
 }
 
 /**
@@ -228,11 +222,10 @@ function render_field_from_name()
   printf(
     '<input type="text" name="%s" value="%s" required/>',
     'primail_default_from_name',
-    $value
+    esc_attr($value)
   );
 
-  $description = __('This text will be used in the `FROM` field',  "primail");
-  echo "<p class='description'>{$description}</p>";
+  echo sprintf("<p class='description'>%s</p>", esc_html__('This text will be used in the `FROM` field',  "primail"));
 }
 
 /**
@@ -247,12 +240,10 @@ function render_field_api_key()
   printf(
     '<input type="text" name="%s" value="%s"/>',
     'primail_api_key',
-    $api_key
+    esc_attr($api_key)
   );
 
-  $description = __('The Mandrill API Key',  "primail");
-
-  echo "<p class='description'>{$description}</p>";
+  echo sprintf("<p class='description'>%s</p>", esc_html__('The Mandrill API Key',  "primail"));
 }
 
 /**
@@ -267,11 +258,10 @@ function render_field_api_test_key()
   printf(
     '<input type="text" name="%s" value="%s"/>',
     'primail_api_test_key',
-    $api_key
+    esc_attr($api_key)
   );
 
-  $description = __('The Mandrill Test API Key, which will be used when debug mode is enabled',  "primail");
-  echo "<p class='description'>{$description}</p>";
+  echo sprintf("<p class='description'>%s</p>", esc_html__('The Mandrill Test API Key, which will be used when debug mode is enabled',  "primail"));
 }
 
 /**
@@ -290,12 +280,12 @@ function render_field_api_mode()
   if ($is_production) {
     $checked = checked(true, true, false);
     $wp_env_guide = 'https://developer.wordpress.org/reference/functions/wp_get_environment_type/';
-    $wp_env_guide_link = sprintf("<a href='{$wp_env_guide}'>%s</a>",  __('Learn more',  "primail"));
+    $wp_env_guide_link = sprintf("<a href='%s'>%s</a>", esc_attr($wp_env_guide), esc_html__('Learn more',  "primail"));
 
     // Debug Mode
     $message = sprintf(
-      __('Debug Mode has been automatically enabled, as this site is not in `Production Mode` (%s)',  "primail"),
-      $wp_env_guide_link
+      esc_html__('Debug Mode has been automatically enabled, as this site is not in `Production Mode` (%s)',  "primail"),
+      esc_attr($wp_env_guide_link)
     );
 
     $env_message = "<p class='description'>{$message}</p>";
@@ -322,15 +312,15 @@ function settings()
 {
   $slug = get_slug();
 
-  $tab = isset($_GET['tab'])
-    ? $_GET['tab']
+  $tab = !empty($_GET['tab'])
+    ? sanitize_key($_GET['tab'])
     : null;
 
   $sent_email = array();
   if (isset($_POST['primail_form_submit']) && check_admin_referer('primail_form_nonce')) {
     $response = send_test_email();
     if (is_wp_error($response)) {
-      echo admin_notice("<p>{$response->get_error_message()}</p>", 'error');
+      echo admin_notice($response->get_error_message(), 'error');
     } else {
       $sent_email = array(
         'request' => $response->get_email(),
@@ -338,8 +328,8 @@ function settings()
       );
 
       echo ($sent_email['response']['status'] === 200)
-        ? admin_notice("<p>" . __('Message Sent.',  "primail") . "</p>", 'success')
-        : admin_notice("<p>" . __('Message Failed to send. See the log details below for more information.',  "primail") . "</p>", 'error');
+        ? admin_notice(esc_html__('Message Sent.',  "primail"), 'success')
+        : admin_notice(esc_html__('Message Failed to send. See the log details below for more information.',  "primail"), 'error');
     }
   }
 
@@ -404,12 +394,11 @@ function get_tab_settings()
 {
   ob_start();
 
-  $mandrill_guide = 'https://mailchimp.com/developer/transactional/guides/quick-start/';
-  $mandrill_guide_link = sprintf("<a href='{$mandrill_guide}'>%s</a>",  __('quick start guide',  "primail"));
+  $mailchimp_guide = 'https://mailchimp.com/developer/transactional/guides/quick-start/';
 
   $msg = array(
     __('Use the API details provided by Mandrill to configure the following settings',  "primail"),
-    sprintf(__('See the %s for generating an API Key and for more general information and options.',  "primail"), $mandrill_guide_link),
+    sprintf(__("See the <a href='%s'>%s</a> for generating an API Key and for more general information and options.",  "primail"), esc_attr($mailchimp_guide), esc_html__('quick start guide',  "primail")),
   );
 
   echo "<div style='width: 100%; max-width: 640px;'>";
@@ -443,12 +432,11 @@ function admin_sidebar()
 {
   $plugin_name = get_primail_plugin_name();
 
-  $links = array(
-    'docs' => sprintf("<a target='_blank' href='https://wordpress.org/support/plugin/primail/'>%s</a>", __('Mandrill Mail',  "primail")),
-    'rate' => sprintf("<a href='https://wordpress.org/support/plugin/{$plugin_name}/reviews/#new-post' target='_blank'>%s</a>", __('rating',  "primail")),
-    'forum' => sprintf("<a href='https://wordpress.org/support/plugin/{$plugin_name}/' target='_blank'>%s</a>", __('Support Forum',  "primail")),
-    'coffee' => sprintf("<a target='_blank' href='https://paypal.me/markcummins87?country.x=IE&locale.x=en_US'>%s</a>", __('buy me a coffee',  "primail")),
-  );
+  $plugin_url = "https://wordpress.org/plugins/{$plugin_name}/";
+  $support_url = "https://wordpress.org/support/plugin/{$plugin_name}/";
+  $review_post_url = "https://wordpress.org/support/plugin/{$plugin_name}/reviews/#new-post";
+  $review_rate_url = "https://wordpress.org/support/plugin/{$plugin_name}/reviews/?filter=5";
+  $donate_url = "https://paypal.me/markcummins87?country.x=IE&locale.x=en_US";
 
   return "<div>
             <div class='primail-admin-card' style='min-width: inherit;'>
@@ -456,7 +444,7 @@ function admin_sidebar()
                 <span class='dashicons dashicons-book' style='margin-right: 8px;'></span> " . __('Docs',  "primail") . "
               </h3>
               <div>
-                <p>" . sprintf(__('Please visit the %s plugins documentation page to learn how to use this plugin.',  "primail"), $links['docs']) . "</p>
+                <p>" . sprintf(__('Please visit the <a target="_blank" href="%s">%s</a> plugins documentation page to learn how to use this plugin.',  "primail"), esc_attr($plugin_url), __('Primail',  "primail")) . "</p>
               </div>
             </div>
             <div class='primail-admin-card' style='min-width: inherit;'>
@@ -464,7 +452,7 @@ function admin_sidebar()
                 <span class='dashicons dashicons-sos' style='margin-right: 8px;'></span> " . __('Support',  "primail") . "
               </h3>
               <div>
-                <p>" . sprintf(__('Having issues or difficulties? You can post your issue on the %s, or drop your feature requests there if you have them!'), $links['forum']) . "</p>
+                <p>" . sprintf(__('Having issues or difficulties? You can post your issue on the <a href="%s" target="_blank">%s</a>, or drop your feature requests there if you have them!'), esc_attr($support_url), __('Support Forum',  "primail")) . "</p>
               </div>
             </div>
             <div class='primail-admin-card' style='min-width: inherit;'>
@@ -472,10 +460,10 @@ function admin_sidebar()
                 <span class='dashicons dashicons-megaphone' style='margin-right: 8px;'></span> " . __('Feedback',  "primail") . "
               </h3>
               <div>
-                " . sprintf(__('Like the plugin? Please give us a %s', 'primail'), $links['rate']) . " (" . __('5 Stars would be nice',  "primail") . " 😂) 
+                " . sprintf(__('Like the plugin? Please give us a <a href="%s" target="_blank">%s</a>', 'primail'), esc_attr($review_post_url), __('rating',  "primail")) . " (" . __('5 Stars would be nice',  "primail") . " 😂) 
                 <div>
                  <p>
-                  <a href='https://wordpress.org/support/plugin/primail/reviews/?filter=5' style='font-size: 0;' target='_blank'>
+                  <a href='" . esc_attr($review_rate_url) . "' style='font-size: 0;' target='_blank'>
                     <span class='dashicons dashicons-star-filled'></span>
                     <span class='dashicons dashicons-star-filled'></span>
                     <span class='dashicons dashicons-star-filled'></span>
@@ -492,7 +480,7 @@ function admin_sidebar()
               </h3>
               <div>
                 <p>" . __('Found this plugin useful? As much fun as it was creating it, it did take a rediculous amount of time',  "primail") . "🙈.</p>
-                <p>" . sprintf(__('If you would like to support my work, you can %s.', 'primail'), $links['coffee']) . " " . __('Thank You!',  "primail") . "</p>
+                <p>" . sprintf(__('If you would like to support my work, you can <a target="_blank" href="' . esc_attr($donate_url) . '">%s</a>.', 'primail'), __('buy me a coffee',  "primail")) . " " . __('Thank You!',  "primail") . "</p>
               </div>
             </div>
           </div>";
@@ -637,7 +625,11 @@ function get_option_group()
  */
 function admin_notice($content, $type)
 {
-  return "<div class='notice notice-{$type} is-dismissible'>{$content}</div>";
+  return sprintf(
+    "<div class='notice notice-%s is-dismissible'><p>%s</p></div>",
+    esc_attr($type),
+    esc_html($content)
+  );
 }
 
 /**

@@ -4,7 +4,7 @@
  * Plugin Name: Primail - Mandrill Email Connector for WordPress
  * Description: Sends EMails from WP_Mail to Mandrill 
  * Description: The Primail plugin allows you to connect your WordPress site with Mandrill for improved email delivery and reliability
- * Version: 1.0
+ * Version: 1.0.0
  * Text Domain: primail
  * Author: Mark Cummins
  * Requires PHP: 5.6.20
@@ -92,13 +92,12 @@ function modify_primail_plugin_action_links($links, $file)
   $query_args = array('page' => 'primail-settings');
   $settings_link = get_admin_url('', 'options-general.php');
 
-  $settings = array(
-    'link' => add_query_arg($query_args, $settings_link),
-    'label' => __('Settings',  "primail")
-  );
-
   return array_merge($links, array(
-    'settings' => "<a href='{$settings['link']}'>{$settings['label']}</a>"
+    'settings' => sprintf(
+      "<a href='%s'>%s</a>",
+      esc_attr(add_query_arg($query_args, $settings_link)),
+      esc_html__('Settings',  "primail")
+    )
   ));
 }
 
